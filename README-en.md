@@ -6,7 +6,7 @@ The goal of this project is to export all notes and attachments in the note soft
 
 ![](./icon/bear.png)
 
-To export, simply execute the following command:
+To export all notes and attachments in Bear software, simply execute the following command:
 
 ```python
 python bear_exporter.py

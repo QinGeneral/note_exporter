@@ -1,3 +1,5 @@
+For English README, Click [here](./README-en.md).
+
 本项目目标是导出笔记软件中的所有笔记 + 附件，而无需会员功能。
 
 ## 导出

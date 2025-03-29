@@ -12,7 +12,7 @@ sqlite_file = bear_path + "database.sqlite"
 note_files_dir = bear_path + "Local Files/"
 note_table_name = "ZSFNOTE"
 bear_dir = "bear/"
-output_dir = "./note/"
+output_dir = "/Users/charliec/Downloads/"
 resource_dir = "resources/"
 bear_total_dir = output_dir + bear_dir
 resource_total_dir = output_dir + bear_dir + resource_dir
@@ -64,6 +64,10 @@ def export():
         title = title.replace("/", "|")
 
         content = note[2]
+        # 确保content是字符串类型
+        if content is None:
+            content = ""
+        content = str(content)
         is_trashed = note[5]
 
         print("笔记：" + title + "，是否在废纸篓：" + str(is_trashed == 1))
@@ -80,9 +84,11 @@ def export():
             file_name = match[left_index:-1]
             for file in all_files:
                 if file_name in file:
-                    shutil.copy(file, resource_total_dir + file_name)
+                    # 只使用文件名，不包含路径
+                    file_name_only = os.path.basename(file_name)
+                    shutil.copy(file, resource_total_dir + file_name_only)
                     content = content.replace(
-                        file_name, resource_dir + file_name)
+                        file_name, resource_dir + file_name_only)
                     break
 
         save_to_file(bear_total_dir + title + ".md", content)

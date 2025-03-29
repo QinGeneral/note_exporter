@@ -17,7 +17,6 @@ resource_dir = "resources/"
 bear_total_dir = output_dir + bear_dir
 resource_total_dir = output_dir + bear_dir + resource_dir
 
-
 def read_sqlite(db_path, exectCmd):
     conn = db.connect(db_path)
     cursor = conn.cursor()
@@ -26,12 +25,10 @@ def read_sqlite(db_path, exectCmd):
     rows = cursor.fetchall()
     return rows
 
-
 def save_to_file(file_name, content):
     with open(file_name, "w", encoding="utf-8") as f:
         f.write(content)
         f.close()
-
 
 def list_all_files(directory):
     all_files = []
@@ -39,7 +36,6 @@ def list_all_files(directory):
         for file in files:
             all_files.append(os.path.join(root, file))
     return all_files
-
 
 def export():
     all_files = list_all_files(note_files_dir)
@@ -93,7 +89,6 @@ def export():
 
         save_to_file(bear_total_dir + title + ".md", content)
 
-
 def check():
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -101,7 +96,6 @@ def check():
         os.makedirs(bear_total_dir)
     if not os.path.exists(resource_total_dir):
         os.makedirs(resource_total_dir)
-
 
 check()
 export()

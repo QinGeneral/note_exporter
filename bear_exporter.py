@@ -12,11 +12,10 @@ sqlite_file = bear_path + "database.sqlite"
 note_files_dir = bear_path + "Local Files/"
 note_table_name = "ZSFNOTE"
 bear_dir = "bear/"
-output_dir = "./note/"
+output_dir = "./notes/"
 resource_dir = "resources/"
 bear_total_dir = output_dir + bear_dir
 resource_total_dir = output_dir + bear_dir + resource_dir
-
 
 def read_sqlite(db_path, exectCmd):
     conn = db.connect(db_path)
@@ -26,12 +25,10 @@ def read_sqlite(db_path, exectCmd):
     rows = cursor.fetchall()
     return rows
 
-
 def save_to_file(file_name, content):
     with open(file_name, "w", encoding="utf-8") as f:
         f.write(content)
         f.close()
-
 
 def list_all_files(directory):
     all_files = []
@@ -39,7 +36,6 @@ def list_all_files(directory):
         for file in files:
             all_files.append(os.path.join(root, file))
     return all_files
-
 
 def export():
     all_files = list_all_files(note_files_dir)
@@ -64,6 +60,10 @@ def export():
         title = title.replace("/", "|")
 
         content = note[2]
+        # 确保content是字符串类型
+        if content is None:
+            content = ""
+        content = str(content)
         is_trashed = note[5]
 
         print("笔记：" + title + "，是否在废纸篓：" + str(is_trashed == 1))
@@ -80,13 +80,14 @@ def export():
             file_name = match[left_index:-1]
             for file in all_files:
                 if file_name in file:
-                    shutil.copy(file, resource_total_dir + file_name)
+                    # 只使用文件名，不包含路径
+                    file_name_only = os.path.basename(file_name)
+                    shutil.copy(file, resource_total_dir + file_name_only)
                     content = content.replace(
-                        file_name, resource_dir + file_name)
+                        file_name, resource_dir + file_name_only)
                     break
 
         save_to_file(bear_total_dir + title + ".md", content)
-
 
 def check():
     if not os.path.exists(output_dir):
@@ -95,7 +96,6 @@ def check():
         os.makedirs(bear_total_dir)
     if not os.path.exists(resource_total_dir):
         os.makedirs(resource_total_dir)
-
 
 check()
 export()
